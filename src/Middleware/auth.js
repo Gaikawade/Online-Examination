@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { sendError } = require('../Utils/helper');
+const { sendError } = require('../Utils/errorHandler');
 
 exports.auth = async (req, res, next) => {
   let token = req.headers[`authorization`];

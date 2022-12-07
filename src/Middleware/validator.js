@@ -46,3 +46,11 @@ exports.signInValidator = [
         .withMessage("Email is invalid"),
     check("password").trim().not().isEmpty().withMessage("Password is missing"),
 ];
+
+exports.validate = (req, res, next) => {
+  const err = validationResult(req).array();
+  if (err.length) {
+      return res.status(400).json({ msg: err[0].msg });
+  }
+  next();
+};
