@@ -47,10 +47,38 @@ exports.signInValidator = [
     check("password").trim().not().isEmpty().withMessage("Password is missing"),
 ];
 
-exports.validate = (req, res, next) => {
-  const err = validationResult(req).array();
-  if (err.length) {
-      return res.status(400).json({ msg: err[0].msg });
-  }
-  next();
-};
+(exports.createQuizValidator = [
+    check("name").trim().not().isEmpty().withMessage("Quiz name is missing"),
+    check("questionsList.*.questionNumber")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Question number is missing")
+        .isInt()
+        .withMessage("Question number must be a number"),
+    check("questionsList.*.question")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Question is missing")
+        .isString()
+        .withMessage("Question must be of alphanumeric type"),
+    check("questionsList.*.options")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Options are missing"),
+    check("createdBy")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Admin ID is missing"),
+    check("answers").trim().not().isEmpty().withMessage("Answers are missing"),
+]),
+    (exports.validate = (req, res, next) => {
+        const err = validationResult(req).array();
+        if (err.length) {
+            return res.status(400).json({ msg: err[0].msg });
+        }
+        next();
+    });
